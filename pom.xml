@@ -3,35 +3,35 @@
 
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.likeness</groupId>
+    <groupId>com.nesscomputing</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>2</version>
+    <version>3</version>
   </parent>
 
   <scm>
-    <connection>scm:git:git://github.com/NessComputing/components-likeness-config.git</connection>
-    <developerConnection>scm:git:git@github.com:NessComputing/components-likeness-config.git</developerConnection>
-    <url>http://github.com/NessComputing/components-likeness-config</url>
+    <connection>scm:git:git://github.com/NessComputing/components-ness-config.git</connection>
+    <developerConnection>scm:git:git@github.com:NessComputing/components-ness-config.git</developerConnection>
+    <url>http://github.com/NessComputing/components-ness-config</url>
   </scm>
 
-  <groupId>com.likeness.components</groupId>
-  <artifactId>likeness-config</artifactId>
-  <name>likeness-config</name>
+  <groupId>com.nesscomputing.components</groupId>
+  <artifactId>ness-config</artifactId>
+  <name>ness-config</name>
   <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>Ness Configuration component.</description>
 
   <dependencies>
     <dependency>
-      <groupId>com.likeness.components</groupId>
-      <artifactId>likeness-logging</artifactId>
-      <version>1.0.1</version>
+      <groupId>com.nesscomputing.components</groupId>
+      <artifactId>ness-logging</artifactId>
+      <version>1.0.2</version>
     </dependency>
 
     <dependency>
-      <groupId>com.likeness.components</groupId>
-      <artifactId>likeness-tinyhttp</artifactId>
-      <version>1.0.0</version>
+      <groupId>com.nesscomputing.components</groupId>
+      <artifactId>ness-tinyhttp</artifactId>
+      <version>1.0.1</version>
     </dependency>
 
     <dependency>
