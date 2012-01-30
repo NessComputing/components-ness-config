@@ -15,15 +15,15 @@
  */
 package com.nesscomputing.config.util;
 
-import com.likeness.logging.Log;
-import com.nesscomputing.config.Config;
-
 import java.net.URI;
 import java.net.URL;
 
 import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+
+import com.nesscomputing.config.Config;
+import com.nesscomputing.logging.Log;
 
 public class ClasspathConfigStrategy extends AbstractConfigStrategy
 {

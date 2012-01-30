@@ -30,11 +30,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
-import com.likeness.logging.Log;
 import com.nesscomputing.config.util.ClasspathConfigStrategy;
 import com.nesscomputing.config.util.ConfigStrategy;
 import com.nesscomputing.config.util.FileConfigStrategy;
 import com.nesscomputing.config.util.HttpConfigStrategy;
+import com.nesscomputing.logging.Log;
 
 class ConfigFactory
 {

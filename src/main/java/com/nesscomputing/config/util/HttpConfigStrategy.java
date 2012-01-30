@@ -31,10 +31,10 @@ import org.apache.http.HttpResponse;
 import org.skife.config.CommonsConfigSource;
 import org.skife.config.ConfigurationObjectFactory;
 
-import com.likeness.logging.Log;
-import com.likeness.tinyhttp.HttpContentConverter;
-import com.likeness.tinyhttp.HttpFetcher;
-import com.likeness.tinyhttp.ssl.SSLConfig;
+import com.nesscomputing.logging.Log;
+import com.nesscomputing.tinyhttp.HttpContentConverter;
+import com.nesscomputing.tinyhttp.HttpFetcher;
+import com.nesscomputing.tinyhttp.ssl.SSLConfig;
 
 public class HttpConfigStrategy extends AbstractConfigStrategy
 {
