@@ -39,6 +39,11 @@ public class ConfigModule extends AbstractModule
         this.config = config;
     }
 
+    public ConfigModule(final String ... keyValuePairs)
+    {
+        this.config = Config.getFixedConfig(keyValuePairs);
+    }
+
     @Override
     public void configure()
     {
