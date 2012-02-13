@@ -110,7 +110,7 @@ public final class Config
      */
     public static Config getEmptyConfig()
     {
-        return Config.getFixedConfig((AbstractConfiguration) null);
+        return new Config(new CombinedConfiguration());
     }
 
     /**
