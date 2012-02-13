@@ -24,9 +24,10 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.junit.After;
 import org.junit.Before;
 
-import com.nesscomputing.config.Config;
 import com.nesscomputing.config.util.LocalHttpService;
+import com.nesscomputing.testing.lessio.AllowNetworkAccess;
 
+@AllowNetworkAccess(endpoints={"127.0.0.1:*"})
 public class TestHttpConfig extends AbstractTestConfig
 {
     private LocalHttpService localHttpService = null;
@@ -52,5 +53,3 @@ public class TestHttpConfig extends AbstractTestConfig
         localHttpService = null;
     }
 }
-
-

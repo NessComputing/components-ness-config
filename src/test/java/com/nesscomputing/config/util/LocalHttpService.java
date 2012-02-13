@@ -40,7 +40,9 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 
 import com.google.common.io.Resources;
+import com.nesscomputing.testing.lessio.AllowNetworkListen;
 
+@AllowNetworkListen(ports={0})
 public class LocalHttpService
 {
     private final Server server = new Server();

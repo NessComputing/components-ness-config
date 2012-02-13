@@ -26,10 +26,11 @@ import org.junit.Assert;
 import org.junit.Before;
 
 import com.google.common.io.Resources;
-import com.nesscomputing.config.Config;
 import com.nesscomputing.config.util.LocalHttpService;
 import com.nesscomputing.config.util.PropertiesSaver;
+import com.nesscomputing.testing.lessio.AllowNetworkAccess;
 
+@AllowNetworkAccess(endpoints={"127.0.0.1:*"})
 public class TestHttpsConfig extends AbstractTestConfig
 {
     private LocalHttpService localHttpService = null;

@@ -28,7 +28,9 @@ import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;
 import com.google.common.io.Resources;
 import com.nesscomputing.config.Config;
+import com.nesscomputing.testing.lessio.AllowLocalFileAccess;
 
+@AllowLocalFileAccess(paths={"*/test-config/*","%TMP_DIR%"})
 public class TestFileTrumpetConfig extends AbstractTestConfig
 {
     File dir = null;

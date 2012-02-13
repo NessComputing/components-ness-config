@@ -28,7 +28,9 @@ import org.junit.Test;
 
 import com.nesscomputing.config.Config;
 import com.nesscomputing.config.util.LocalHttpService;
+import com.nesscomputing.testing.lessio.AllowNetworkAccess;
 
+@AllowNetworkAccess(endpoints={"127.0.0.1:*"})
 public class TestHttpAuthTrumpetConfig
 {
     public static final String LOGIN_USER = "demo";
