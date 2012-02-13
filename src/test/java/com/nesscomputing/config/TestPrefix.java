@@ -71,7 +71,7 @@ public class TestPrefix
         pc.setProperty("prefix.of.three.string-null-value", "NULL");
         pc.setProperty("prefix.of.three.string-value", "another test value");
 
-        Config c2 = new Config(cfg, pc);
+        Config c2 = Config.getOverriddenConfig(cfg, pc);
 
         final Configuration config = c2.getConfiguration("prefix.of.three");
 
@@ -98,7 +98,7 @@ public class TestPrefix
         try {
             System.setProperty("prefix.of.three.string-value", "system-value");
 
-            Config c2 = new Config(cfg, pc);
+            Config c2 = Config.getOverriddenConfig(cfg, pc);
 
             final Configuration config = c2.getConfiguration("prefix.of.three");
 

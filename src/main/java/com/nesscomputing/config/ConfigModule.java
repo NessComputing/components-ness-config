@@ -29,19 +29,40 @@ public class ConfigModule extends AbstractModule
 {
     private final Config config;
 
+    public static ConfigModule forTesting(final String ... keyValuePairs)
+    {
+        return new ConfigModule(Config.getFixedConfig(keyValuePairs));
+    }
+
+    public static ConfigModule forTesting()
+    {
+        return new ConfigModule(Config.getEmptyConfig());
+    }
+
+    /**
+     * Create a new config module that uses the system properties 'ness.config.location' and 'ness.config' to determine what configurations to load.
+     */
     public ConfigModule()
     {
         this.config = Config.getConfig();
     }
 
+    /**
+     * Bind the config module as system configuration.
+     *
+     */
     public ConfigModule(final Config config)
     {
         this.config = config;
     }
 
+    /**
+     * @deprecated Use {@link ConfigModule#forTesting(String ... keyValuePairs)}
+     */
+    @Deprecated
     public ConfigModule(final String ... keyValuePairs)
     {
-        this.config = Config.getFixedConfig(keyValuePairs);
+        this(Config.getFixedConfig(keyValuePairs));
     }
 
     @Override

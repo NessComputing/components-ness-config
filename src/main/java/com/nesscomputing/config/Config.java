@@ -64,8 +64,9 @@ public final class Config
 
     /**
      * Creates a fixed configuration for the supplied {@link AbstractConfiguration} objects. Only key/value
-     * pairs from these objects will be present in the final configuration. There is no implicit override from
-     * system properties.
+     * pairs from these objects will be present in the final configuration.
+     *
+     * There is no implicit override from system properties.
      */
     public static Config getFixedConfig(@Nullable final AbstractConfiguration ... configs)
     {
@@ -104,14 +105,25 @@ public final class Config
     }
 
     /**
+     * Return an empty configuration object without any properties set. This object is immutable so every
+     * bean created from this config object will only have the defaults. This is mostly useful for testing.
+     */
+    public static Config getEmptyConfig()
+    {
+        return Config.getFixedConfig((AbstractConfiguration) null);
+    }
+
+    /**
      * Loads the configuration. The no-args method uses system properties to determine which configurations
      * to load.
      *
      * -Dness.config=x/y/z defines a hierarchy of configurations from general
      * to detail.
      *
-     * If the ness.config.location variable is unset, the config is empty.
+     * The ness.config.location variable must be set.
      * If the ness.config variable is unset, the default value "default" is used.
+     *
+     * @throws IllegalStateException If the ness.config.location variable is not set.
      */
     public static Config getConfig()
     {
@@ -124,12 +136,62 @@ public final class Config
     }
 
     /**
-     * Load system configuration, using the supplied URI as base.
+     * Load Configuration, using the supplied URI as base. The loaded configuration can be overridden using
+     * system properties.
      */
     public static Config getConfig(@Nonnull final URI configLocation, @Nullable final String configName)
     {
         final ConfigFactory configFactory = new ConfigFactory(configLocation, configName);
         return new Config(configFactory.load());
+    }
+
+    /**
+     * Create a new configuration object from an existing object using overrides. If no overrides are passed in, the same object is returned.
+     *
+     * the
+     */
+    public static Config getOverriddenConfig(@Nonnull final Config config, @Nullable final AbstractConfiguration ... overrideConfigurations)
+    {
+        if (overrideConfigurations == null || overrideConfigurations.length == 0) {
+            return config;
+        }
+
+        final CombinedConfiguration cc = new CombinedConfiguration();
+
+        int index  = 0;
+        final AbstractConfiguration first = AbstractConfiguration.class.cast(config.config.getConfiguration(index)); // cast always succeeds, internally this returns cd.getConfiguration() which is AbstractConfiguration
+
+        // If the passed in configuration has a system config, add this as the very first one so
+        // that system properties override still works.
+        if(first != null && first.getClass() == SystemConfiguration.class) {
+            cc.addConfiguration(first);
+            index++;
+        }
+        else {
+            // Otherwise, if any of the passed in configuration objects is a SystemConfiguration,
+            // put that at the very beginning.
+            for (AbstractConfiguration c : overrideConfigurations) {
+                if (c.getClass() == SystemConfiguration.class) {
+                    cc.addConfiguration(c);
+                }
+            }
+        }
+
+        for (AbstractConfiguration c : overrideConfigurations) {
+            if (c.getClass() != SystemConfiguration.class) {
+                cc.addConfiguration(c); // Skip system configuration objects, they have been added earlier.
+            }
+        }
+
+        // Finally, add the existing configuration elements at lowest priority.
+        while (index < config.config.getNumberOfConfigurations()) {
+            final AbstractConfiguration c = AbstractConfiguration.class.cast(config.config.getConfiguration(index++));
+            if (c.getClass() != SystemConfiguration.class) {
+                cc.addConfiguration(c);
+            }
+        }
+
+        return new Config(cc);
     }
 
     /**
@@ -147,32 +209,6 @@ public final class Config
         this.config = config;
     }
 
-    public Config(final Config config, final AbstractConfiguration ... overrideConfigurations)
-    {
-        final CombinedConfiguration baseConfig = config.config;
-
-        if (overrideConfigurations == null || overrideConfigurations.length == 0) {
-            this.config = baseConfig;
-        }
-        else {
-            final CombinedConfiguration cc = new CombinedConfiguration();
-
-            final AbstractConfiguration first = AbstractConfiguration.class.cast(baseConfig.getConfiguration(0)); // cast always succeeds, internally this returns cd.getConfiguration() which is AbstractConfiguration
-            Preconditions.checkState(first != null && first.getClass() == SystemConfiguration.class, "First config in parent is not the SystemConfiguration, you are in trouble...");
-            cc.addConfiguration(first);
-
-            for (AbstractConfiguration c : overrideConfigurations) {
-                cc.addConfiguration(c);
-            }
-
-            for (int i = 1; i < baseConfig.getNumberOfConfigurations(); i++) {
-                cc.addConfiguration((AbstractConfiguration) baseConfig.getConfiguration(i));
-            }
-
-            this.config = cc;
-        }
-    }
-
     public AbstractConfiguration getConfiguration()
     {
         return new ImmutableConfiguration(config);
@@ -181,11 +217,6 @@ public final class Config
     public AbstractConfiguration getConfiguration(final String prefix)
     {
         return new ImmutableConfiguration(config.subset(prefix));
-    }
-
-    public AbstractConfiguration getSystemConfiguration()
-    {
-        return new ImmutableConfiguration(new SystemConfiguration());
     }
 
     public <T> T getBean(Class<T> classType)

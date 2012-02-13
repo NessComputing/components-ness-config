@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.SystemConfiguration;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,10 +45,10 @@ public class SystemOverrideTest
         System.setProperty("string-value", "OVERRIDDEN");
 
         cfg = Config.getConfig("classpath:/test-config/basic", "values");
-        Assert.assertThat(cfg.getSystemConfiguration().getString("string-value"), is("OVERRIDDEN"));
+        Assert.assertThat(new SystemConfiguration().getString("string-value"), is("OVERRIDDEN"));
 
         cfg2 = Config.getConfig("classpath:/test-config//basic-legacy", "values");
-        Assert.assertThat(cfg2.getSystemConfiguration().getString("string-value"), is("OVERRIDDEN"));
+        Assert.assertThat(new SystemConfiguration().getString("string-value"), is("OVERRIDDEN"));
 }
 
     @After
@@ -66,13 +67,13 @@ public class SystemOverrideTest
     {
         System.clearProperty("string-value");
 
-        Assert.assertThat(cfg.getSystemConfiguration().getString("string-value"), is(nullValue()));
-        Assert.assertThat(cfg2.getSystemConfiguration().getString("string-value"), is(nullValue()));
+        Assert.assertThat(new SystemConfiguration().getString("string-value"), is(nullValue()));
+        Assert.assertThat(new SystemConfiguration().getString("string-value"), is(nullValue()));
 
         System.setProperty("string-value", "OVERRIDDEN");
 
-        Assert.assertThat(cfg.getSystemConfiguration().getString("string-value"), is("OVERRIDDEN"));
-        Assert.assertThat(cfg2.getSystemConfiguration().getString("string-value"), is("OVERRIDDEN"));
+        Assert.assertThat(new SystemConfiguration().getString("string-value"), is("OVERRIDDEN"));
+        Assert.assertThat(new SystemConfiguration().getString("string-value"), is("OVERRIDDEN"));
     }
 
     @Test
