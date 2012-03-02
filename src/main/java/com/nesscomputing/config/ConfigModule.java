@@ -83,9 +83,4 @@ public class ConfigModule extends AbstractModule
     {
         bind(Config.class).toProvider(configProvider).in(Scopes.SINGLETON);
     }
-
-    protected Config getConfig()
-    {
-        return configProvider.get();
-    }
 }
