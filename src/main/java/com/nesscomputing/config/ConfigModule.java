@@ -17,6 +17,9 @@ package com.nesscomputing.config;
 
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
+import com.google.inject.Scopes;
+import com.google.inject.util.Providers;
 
 /**
  * Binding configuration to Guice. This is a pretty simple module right now but
@@ -27,7 +30,7 @@ import com.google.inject.AbstractModule;
  */
 public class ConfigModule extends AbstractModule
 {
-    private final Config config;
+    private final Provider<Config> configProvider;
 
     public static ConfigModule forTesting(final String ... keyValuePairs)
     {
@@ -44,7 +47,14 @@ public class ConfigModule extends AbstractModule
      */
     public ConfigModule()
     {
-        this.config = Config.getConfig();
+        // Use a provider to lazy-load.  In the case where the Config binding is later overridden by Modules.override,
+        // this will ensure we do not go out and build the Config object anyway, which might include a HTTP fetch.
+        this.configProvider = new Provider<Config>() {
+            @Override
+            public Config get() {
+                return Config.getConfig();
+            }
+        };
     }
 
     /**
@@ -53,7 +63,7 @@ public class ConfigModule extends AbstractModule
      */
     public ConfigModule(final Config config)
     {
-        this.config = config;
+        this.configProvider = Providers.of(config);
     }
 
     /**
@@ -68,11 +78,6 @@ public class ConfigModule extends AbstractModule
     @Override
     public void configure()
     {
-        bind(Config.class).toInstance(config);
-    }
-
-    protected Config getConfig()
-    {
-        return config;
+        bind(Config.class).toProvider(configProvider).in(Scopes.SINGLETON);
     }
 }
