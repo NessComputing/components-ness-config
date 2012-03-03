@@ -70,7 +70,8 @@ public class TestFileTrumpetConfig extends AbstractTestConfig
      * handle symlinks well.  So we replicate the functionality here without the file canonicalization
      * step.
      */
-    private void mkdirs(File targetDir) {
+    private void mkdirs(File targetDir)
+    {
         if (!targetDir.exists()) {
             mkdirs(targetDir.getParentFile());
         }

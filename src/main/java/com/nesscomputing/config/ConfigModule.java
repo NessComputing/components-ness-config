@@ -50,8 +50,7 @@ public class ConfigModule extends AbstractModule
         // Use a provider to load during the Injector creating stage, rather than the module instantiaton itself.
         // In the case where the Config binding is later overridden by Modules.override, this will ensure we do not
         // go out and build the Config object anyway -- that may fail due to e.g. missing System properties
-        this.configProvider = new Provider<Config>()
-        {
+        this.configProvider = new Provider<Config>() {
             @Override
             public Config get()
             {
