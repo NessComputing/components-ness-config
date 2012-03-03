@@ -55,12 +55,27 @@ public class TestFileTrumpetConfig extends AbstractTestConfig
             final InputSupplier<InputStream> input = Resources.newInputStreamSupplier(Resources.getResource(Config.class, fileName));
             Assert.assertNotNull(input.getInput());
             final File targetFile = new File(dir, fileName);
-            Files.createParentDirs(targetFile);
+            mkdirs(targetFile.getParentFile());
             Files.copy(input, targetFile);
         }
 
         cfg = Config.getConfig(new File(dir, "/test-config/basic").toURI(), "values");
         cfg2 = Config.getConfig(new File(dir, "/test-config/basic-legacy").toURI(), "values");
+    }
+
+    /**
+     * The {@link File#mkdirs()} method calls {@link File#getCanonicalFile()} on its target.  On Mac OS X
+     * <code>/tmp</code> is a symlink into <code>/var/folders</code> which is itself a symlink into
+     * <code>/private/var/folders</code>.  For technical reasons, the <code>LessIOSecurityManager</code> does not
+     * handle symlinks well.  So we replicate the functionality here without the file canonicalization
+     * step.
+     */
+    private void mkdirs(File targetDir)
+    {
+        if (!targetDir.exists()) {
+            mkdirs(targetDir.getParentFile());
+        }
+        targetDir.mkdir();
     }
 
     @After
