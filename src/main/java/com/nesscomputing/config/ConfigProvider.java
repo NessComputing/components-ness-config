@@ -21,6 +21,7 @@ import java.util.Map;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 
 import javax.annotation.Nullable;
 
@@ -29,6 +30,7 @@ import javax.annotation.Nullable;
  *
  * @param <T> The type of the configuration bean.
  */
+@Singleton
 public class ConfigProvider<T> implements Provider<T>
 {
 	private final String prefix;
