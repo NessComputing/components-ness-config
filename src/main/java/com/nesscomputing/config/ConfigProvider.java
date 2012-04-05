@@ -18,10 +18,9 @@ package com.nesscomputing.config;
 
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.Provider;
-
 import javax.annotation.Nullable;
 
 /**
@@ -35,7 +34,7 @@ public class ConfigProvider<T> implements Provider<T>
     private final Class<T> clazz;
     private final Map<String, String> overrides;
 
-    private Config config = null;
+    private T configBean = null;
 
     /**
      * Returns a Provider for a configuration bean. This method should be used in Modules
@@ -86,14 +85,15 @@ public class ConfigProvider<T> implements Provider<T>
     }
 
     @Inject
-    public void setInjector(final Injector injector)
+    public void setConfig(final Config config)
     {
-        this.config = injector.getInstance(Config.class);
+        this.configBean = config.getBean(prefix, clazz, overrides);
     }
 
     @Override
     public T get()
     {
-        return config.getBean(prefix, clazz, overrides);
+        Preconditions.checkState(configBean != null, "configuration was never injected");
+        return configBean;
     }
 }
