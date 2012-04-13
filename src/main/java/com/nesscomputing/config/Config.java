@@ -81,6 +81,17 @@ public final class Config
     }
 
     /**
+     * Creates a fixed configuration for the supplied Map. Only key/value
+     * pairs from this map will be present in the final configuration.
+     *
+     * There is no implicit override from system properties.
+     */
+    public static Config getFixedConfig(@Nonnull Map<String, String> config)
+    {
+        return getFixedConfig(new MapConfiguration(config));
+    }
+
+    /**
      * Creates a fixed configuration for the supplied key/value pairs. The number of elements passed in must be an
      * even number of elements, otherwise the last one is ignored.
      *
