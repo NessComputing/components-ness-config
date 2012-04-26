@@ -170,7 +170,10 @@ public final class Config
         final CombinedConfiguration cc = new CombinedConfiguration();
 
         int index  = 0;
-        final AbstractConfiguration first = AbstractConfiguration.class.cast(config.config.getConfiguration(index)); // cast always succeeds, internally this returns cd.getConfiguration() which is AbstractConfiguration
+        final AbstractConfiguration first = config.config.getNumberOfConfigurations() > 0 ?
+            AbstractConfiguration.class.cast(config.config.getConfiguration(index)) // cast always succeeds, internally this returns cd.getConfiguration() which is AbstractConfiguration
+            : null;
+
 
         // If the passed in configuration has a system config, add this as the very first one so
         // that system properties override still works.
