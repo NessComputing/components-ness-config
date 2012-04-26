@@ -17,7 +17,7 @@
   <groupId>com.nesscomputing.components</groupId>
   <artifactId>ness-config</artifactId>
   <name>ness-config</name>
-  <version>2.1.2-SNAPSHOT</version>
+  <version>2.1.2</version>
   <packaging>jar</packaging>
   <description>Ness Configuration component.</description>
 
