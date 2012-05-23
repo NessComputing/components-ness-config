@@ -77,6 +77,19 @@ public class ConfigProvider<T> implements Provider<T>
         return new ConfigProvider<TYPE>(prefix, clazz, overrides);
     }
 
+    /**
+     * Returns a Provider for a configuration bean. This method should be used in Modules
+     * that require access to configuration.
+     * @param clazz The class of the Configuration bean.
+     * @return A provider.
+     * @see Config#getBean(String, Class)
+     */
+    public static final <TYPE> Provider<TYPE> of(final Class<TYPE> clazz,
+            @Nullable final Map<String, String> overrides)
+    {
+        return of(null, clazz, overrides);
+    }
+
     private ConfigProvider(final String prefix, final Class<T> clazz, final Map<String, String> overrides)
     {
         this.prefix = prefix;
