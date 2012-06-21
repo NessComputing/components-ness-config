@@ -22,8 +22,6 @@ import java.security.Principal;
 import javax.security.auth.Subject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jetty.http.security.Credential;
-import org.eclipse.jetty.http.security.Password;
 import org.eclipse.jetty.security.DefaultIdentityService;
 import org.eclipse.jetty.security.IdentityService;
 import org.eclipse.jetty.security.LoginService;
@@ -38,6 +36,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.UserIdentity;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
+import org.eclipse.jetty.util.security.Credential;
+import org.eclipse.jetty.util.security.Password;
 
 import com.google.common.io.Resources;
 import com.nesscomputing.testing.lessio.AllowNetworkListen;
