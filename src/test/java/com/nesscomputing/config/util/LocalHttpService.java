@@ -38,6 +38,7 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.util.security.Credential;
 import org.eclipse.jetty.util.security.Password;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import com.google.common.io.Resources;
 import com.nesscomputing.testing.lessio.AllowNetworkListen;
@@ -86,36 +87,41 @@ public class LocalHttpService
 
     private static Connector getSSLHttpConnector()
     {
-        final SslSelectChannelConnector scc = new SslSelectChannelConnector();
+        final URL keystoreUrl = Resources.getResource(LocalHttpService.class, "/test-server-keystore.jks");
+
+        final SslContextFactory contextFactory = new SslContextFactory();
+
+        contextFactory.setKeyStorePath(keystoreUrl.toString());
+        contextFactory.setKeyStorePassword("changeit");
+        contextFactory.setKeyManagerPassword("changeit");
+        final SslSelectChannelConnector scc = new SslSelectChannelConnector(contextFactory);
         scc.setPort(0);
         scc.setHost("localhost");
-
-        final URL keystoreUrl = Resources.getResource(LocalHttpService.class, "/test-server-keystore.jks");
-        scc.setKeystore(keystoreUrl.toString());
-        scc.setPassword("changeit");
-        scc.setKeyPassword("changeit");
 
         return scc;
     }
 
 	private static Connector getSSLClientCertHttpConnector(String truststore,
-		String truststorePassword, String keystore, String keystorePassword, String keystoreType) {
-		final SslSelectChannelConnector scc = new SslSelectChannelConnector();
+		String truststorePassword, String keystore, String keystorePassword, String keystoreType)
+	{
+        final URL keystoreUrl = Resources.getResource(LocalHttpService.class, keystore);
+
+        final SslContextFactory contextFactory = new SslContextFactory();
+        contextFactory.setKeyStorePath(keystoreUrl.toString());
+        contextFactory.setKeyStorePassword(keystorePassword);
+        contextFactory.setKeyManagerPassword(keystorePassword);
+        contextFactory.setKeyStoreType(keystoreType);
+
+        final URL truststoreUrl = Resources.getResource(LocalHttpService.class, truststore);
+        contextFactory.setTrustStore(truststoreUrl.toString());
+        contextFactory.setTrustStorePassword(truststorePassword);
+        contextFactory.setTrustStoreType("JKS");
+
+        contextFactory.setNeedClientAuth(true);
+
+        final SslSelectChannelConnector scc = new SslSelectChannelConnector(contextFactory);
 		scc.setPort(0);
 		scc.setHost("localhost");
-
-		final URL keystoreUrl = Resources.getResource(LocalHttpService.class, keystore);
-		scc.setKeystore(keystoreUrl.toString());
-		scc.setPassword(keystorePassword);
-		scc.setKeyPassword(keystorePassword);
-		scc.setKeystoreType(keystoreType);
-
-		URL truststoreUrl = Resources.getResource(LocalHttpService.class, truststore);
-		scc.setTruststore(truststoreUrl.toString());
-		scc.setTrustPassword(truststorePassword);
-		scc.setTruststoreType("JKS");
-
-		scc.setNeedClientAuth(true);
 
 		return scc;
 	}
