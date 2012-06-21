@@ -30,6 +30,7 @@ import org.apache.commons.configuration.CombinedConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.MapConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
+import org.apache.commons.configuration.tree.OverrideCombiner;
 import org.skife.config.CommonsConfigSource;
 import org.skife.config.ConfigurationObjectFactory;
 
@@ -70,7 +71,7 @@ public final class Config
      */
     public static Config getFixedConfig(@Nullable final AbstractConfiguration ... configs)
     {
-        final CombinedConfiguration cc = new CombinedConfiguration();
+        final CombinedConfiguration cc = new CombinedConfiguration(new OverrideCombiner());
 
         if (configs != null) {
             for (final AbstractConfiguration config : configs) {
@@ -121,7 +122,7 @@ public final class Config
      */
     public static Config getEmptyConfig()
     {
-        return new Config(new CombinedConfiguration());
+        return new Config(new CombinedConfiguration(new OverrideCombiner()));
     }
 
     /**
@@ -167,7 +168,7 @@ public final class Config
             return config;
         }
 
-        final CombinedConfiguration cc = new CombinedConfiguration();
+        final CombinedConfiguration cc = new CombinedConfiguration(new OverrideCombiner());
 
         int index  = 0;
         final AbstractConfiguration first = config.config.getNumberOfConfigurations() > 0 ?
