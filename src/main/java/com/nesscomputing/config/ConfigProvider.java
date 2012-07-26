@@ -98,9 +98,10 @@ public class ConfigProvider<T> implements Provider<T>
     }
 
     @Inject
-    public void setConfig(final Config config)
+    public void setConfig(final Config config, ConfigJmxExporter exporter)
     {
         this.configBean = config.getBean(prefix, clazz, overrides);
+        exporter.export(clazz, configBean);
     }
 
     @Override
