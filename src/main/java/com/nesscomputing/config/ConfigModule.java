@@ -81,5 +81,6 @@ public class ConfigModule extends AbstractModule
     public void configure()
     {
         bind(Config.class).toProvider(configProvider).in(Scopes.SINGLETON);
+        bind(ConfigJmxExporter.class).asEagerSingleton();
     }
 }
