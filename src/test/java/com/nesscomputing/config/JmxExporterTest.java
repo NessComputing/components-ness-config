@@ -15,8 +15,6 @@
  */
 package com.nesscomputing.config;
 
-import java.lang.management.ManagementFactory;
-
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
@@ -25,10 +23,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.skife.config.Default;
 import org.skife.config.TimeSpan;
+import org.weakref.jmx.testing.TestingMBeanServer;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 
 public class JmxExporterTest
 {
@@ -45,6 +43,8 @@ public class JmxExporterTest
         TimeSpan getZ();
     }
 
+    MBeanServer server = new TestingMBeanServer();
+
     @Before
     public void setUp()
     {
@@ -52,15 +52,13 @@ public class JmxExporterTest
             @Override
             protected void configure()
             {
-                bind (MBeanServer.class).toInstance(ManagementFactory.getPlatformMBeanServer());
+                bind (MBeanServer.class).toInstance(server);
                 install (ConfigModule.forTesting("test.x", "foo", "test.z", "10s"));
                 bind (MyBean.class).toProvider(ConfigProvider.of(MyBean.class));
             }
         }).injectMembers(this);
     }
 
-    @Inject
-    MBeanServer server;
 
     @Test
     public void doTest() throws Exception
