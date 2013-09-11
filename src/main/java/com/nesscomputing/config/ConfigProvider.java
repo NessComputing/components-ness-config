@@ -34,7 +34,8 @@ public class ConfigProvider<T> implements Provider<T>
     private final Class<T> clazz;
     private final Map<String, String> overrides;
 
-    private T configBean = null;
+    private volatile T configBean = null;
+    private volatile ConfigJmxExporter exporter;
 
     /**
      * Returns a Provider for a configuration bean. This method should be used in Modules
@@ -98,10 +99,22 @@ public class ConfigProvider<T> implements Provider<T>
     }
 
     @Inject
-    public void setConfig(final Config config, ConfigJmxExporter exporter)
+    public void setConfig(final Config config)
     {
         this.configBean = config.getBean(prefix, clazz, overrides);
-        exporter.export(clazz, configBean);
+        setExporter(exporter); // Make sure we export regardless of what order Guice injects.
+    }
+
+    @Inject(optional=true)
+    void setExporter(final ConfigJmxExporter exporter)
+    {
+        if (this.exporter != exporter) {
+            this.exporter = exporter;
+
+            if (exporter != null && configBean != null) {
+                exporter.export(clazz, configBean);
+            }
+        }
     }
 
     @Override
