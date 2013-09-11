@@ -51,7 +51,7 @@ abstract class AbstractDynamicMBean implements DynamicMBean
         {
             MBeanAttributeInfo attrib = new MBeanAttributeInfo(
                     entry.getKey(),
-                    entry.getValue().getClass().toString(),
+                    (entry.getValue() == null ? String.class : entry.getValue().getClass()).toString(),
                     "", true, false, false);
             attribs[i++] = attrib;
         }
