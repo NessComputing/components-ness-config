@@ -21,13 +21,14 @@ import java.net.URL;
 import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.nesscomputing.config.Config;
-import com.nesscomputing.logging.Log;
 
 public class ClasspathConfigStrategy extends AbstractConfigStrategy
 {
-    private static Log LOG = Log.findLog();
+    private static final Logger LOG = LoggerFactory.getLogger(ClasspathConfigStrategy.class);
 
     public ClasspathConfigStrategy()
     {

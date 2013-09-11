@@ -15,7 +15,6 @@
  */
 package com.nesscomputing.config;
 
-
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -25,6 +24,10 @@ import java.util.concurrent.ConcurrentMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+
 import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.commons.configuration.CombinedConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -33,12 +36,10 @@ import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.configuration.tree.OverrideCombiner;
 import org.skife.config.CommonsConfigSource;
 import org.skife.config.ConfigurationObjectFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.nesscomputing.config.util.ImmutableConfiguration;
-import com.nesscomputing.logging.Log;
 
 /**
  * Load configurations from a hierarchy of configuration files. A hierarchy is defined as "a/b/c/d/..." more local
@@ -52,14 +53,14 @@ import com.nesscomputing.logging.Log;
  */
 public final class Config
 {
-    private static final Log LOG = Log.findLog();
+    private static final Logger LOG = LoggerFactory.getLogger(Config.class);
 
     /** Java system property for setting the configuration. */
     public static final String CONFIG_PROPERTY_NAME = "ness.config";
     public static final String CONFIG_LOCATION_PROPERTY_NAME = "ness.config.location";
 
     private static final Object NULL_OBJECT = new Object();
-    private ConcurrentMap<Object, ConfigurationObjectFactory> objectFactories = Maps.newConcurrentMap();
+    private final ConcurrentMap<Object, ConfigurationObjectFactory> objectFactories = Maps.newConcurrentMap();
 
     private final CombinedConfiguration config;
 

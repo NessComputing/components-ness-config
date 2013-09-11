@@ -30,15 +30,16 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.skife.config.CommonsConfigSource;
 import org.skife.config.ConfigurationObjectFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.nesscomputing.logging.Log;
 import com.nesscomputing.tinyhttp.HttpContentConverter;
 import com.nesscomputing.tinyhttp.HttpFetcher;
 import com.nesscomputing.tinyhttp.ssl.SSLConfig;
 
 public class HttpConfigStrategy extends AbstractConfigStrategy
 {
-    private static Log LOG = Log.findLog();
+    private static final Logger LOG = LoggerFactory.getLogger(HttpConfigStrategy.class);
 
     private static final HttpContentConverter<AbstractConfiguration> CONFIG_CONVERTER = new AbstractConfigurationConverter();
 
@@ -87,7 +88,7 @@ public class HttpConfigStrategy extends AbstractConfigStrategy
                     }
                 }
                 catch (IOException ioe) {
-                    LOG.trace(ioe, "... failed");
+                    LOG.trace("... failed", ioe);
                 }
             }
             return null;

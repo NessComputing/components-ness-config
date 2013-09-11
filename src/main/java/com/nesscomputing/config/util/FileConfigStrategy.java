@@ -21,12 +21,12 @@ import java.net.URI;
 import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-
-import com.nesscomputing.logging.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileConfigStrategy extends AbstractConfigStrategy
 {
-    private static Log LOG = Log.findLog();
+    private static final Logger LOG = LoggerFactory.getLogger(FileConfigStrategy.class);
 
     private final File directoryLocation;
 
@@ -60,7 +60,7 @@ public class FileConfigStrategy extends AbstractConfigStrategy
                     return config;
                 }
                 catch (ConfigurationException ce) {
-                    LOG.trace(ce, "... failed");
+                    LOG.trace("... failed", ce);
                 }
             }
         }

@@ -18,11 +18,12 @@ package com.nesscomputing.config;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.skife.config.cglib.core.ReflectUtils;
-
-import com.google.common.collect.Maps;
-import com.nesscomputing.logging.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Export a single ConfigMagic bean to JMX
@@ -30,7 +31,7 @@ import com.nesscomputing.logging.Log;
 class ConfigMagicDynamicMBean extends AbstractDynamicMBean
 {
     private static final String CONFIG_MAGIC_CALLBACKS_NAME = "callbacks";
-    private static final Log LOG = Log.findLog();
+    private static final Logger LOG = LoggerFactory.getLogger(ConfigMagicDynamicMBean.class);
 
     ConfigMagicDynamicMBean(String name, Object configBean)
     {
@@ -55,7 +56,7 @@ class ConfigMagicDynamicMBean extends AbstractDynamicMBean
                 result.put(prop.getName(), ObjectUtils.toString(prop.getReadMethod().invoke(configBean), null));
             } catch (Exception e)
             {
-                LOG.error(e, "For class %s, unable to find config property %s", configBean.getClass(), prop);
+                LOG.error(String.format("For class %s, unable to find config property %s", configBean.getClass(), prop), e);
             }
         }
 

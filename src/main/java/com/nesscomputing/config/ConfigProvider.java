@@ -18,10 +18,11 @@ package com.nesscomputing.config;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import javax.annotation.Nullable;
 
 /**
  * Provides an arbitrary configuration bean which is configured from the main Config object.

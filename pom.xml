@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.nesscomputing</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>20</version>
+    <version>31-SNAPSHOT</version>
   </parent>
 
   <scm>
@@ -17,7 +17,7 @@
   <groupId>com.nesscomputing.components</groupId>
   <artifactId>ness-config</artifactId>
   <name>ness-config</name>
-  <version>2.2.1-SNAPSHOT</version>
+  <version>2.3.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>Ness Configuration component.</description>
 
@@ -27,15 +27,14 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.nesscomputing.components</groupId>
-      <artifactId>ness-logging</artifactId>
-      <version>1.1.0</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
 
     <dependency>
       <groupId>com.nesscomputing.components</groupId>
       <artifactId>ness-tinyhttp</artifactId>
-      <version>1.1.0</version>
+      <version>1.2.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
@@ -87,7 +86,7 @@
 
     <dependency>
       <groupId>junit</groupId>
-      <artifactId>junit-dep</artifactId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -120,6 +119,12 @@
       <groupId>org.weakref</groupId>
       <artifactId>jmxutils</artifactId>
       <version>1.12</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
     </dependency>
 

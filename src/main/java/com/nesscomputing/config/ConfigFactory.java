@@ -21,24 +21,26 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableMap;
+
 import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.commons.configuration.CombinedConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.configuration.tree.OverrideCombiner;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableMap;
 import com.nesscomputing.config.util.ClasspathConfigStrategy;
 import com.nesscomputing.config.util.ConfigStrategy;
 import com.nesscomputing.config.util.FileConfigStrategy;
 import com.nesscomputing.config.util.HttpConfigStrategy;
-import com.nesscomputing.logging.Log;
 
 class ConfigFactory
 {
-    private static final Log LOG = Log.findLog();
+    private static final Logger LOG = LoggerFactory.getLogger(ConfigFactory.class);
 
     private static final Map<String, ? extends ConfigStrategyProvider> STRATEGY_PROVIDERS;
 
@@ -110,7 +112,7 @@ class ConfigFactory
                     loadedConfig = true;
                 }
             } catch (ConfigurationException ce) {
-                LOG.error(ce, "While loading configuration '%s'", configFileName);
+                LOG.error(String.format("While loading configuration '%s'", configFileName), ce);
             }
         }
 

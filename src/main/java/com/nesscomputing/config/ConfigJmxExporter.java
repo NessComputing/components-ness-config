@@ -28,7 +28,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import com.nesscomputing.logging.Log;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Export Config objects and all ConfigMagic beans in JMX, if the MBeanServer
@@ -36,7 +38,7 @@ import com.nesscomputing.logging.Log;
  */
 class ConfigJmxExporter
 {
-    private static final Log LOG = Log.findLog();
+    private static final Logger LOG = LoggerFactory.getLogger(ConfigJmxExporter.class);
     private static final String ROOT = ConfigJmxExporter.class.getPackage().getName();
 
     private final Config config;
@@ -62,7 +64,7 @@ class ConfigJmxExporter
         try {
             exportConfig();
         } catch (JMException e) {
-            LOG.error(e, "Unable to export configuration tree to JMX");
+            LOG.error("Unable to export configuration tree to JMX", e);
         }
 
         for (Entry<? extends Class<?>, Object> e : delayedBeanExports) {
@@ -90,7 +92,7 @@ class ConfigJmxExporter
                     new ObjectName(munge(realClass.getName())));
         } catch (Exception e)
         {
-            LOG.error(e, "Unable to export config bean %s", configBean.getClass().getName());
+            LOG.error("Unable to export config bean " + configBean.getClass().getName(), e);
         }
     }
 
