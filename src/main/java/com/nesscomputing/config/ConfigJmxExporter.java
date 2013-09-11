@@ -18,6 +18,7 @@ package com.nesscomputing.config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.annotation.concurrent.GuardedBy;
 import javax.management.JMException;
@@ -27,6 +28,7 @@ import javax.management.ObjectName;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
 import org.slf4j.Logger;
@@ -49,6 +51,9 @@ class ConfigJmxExporter
     @GuardedBy("this")
     private final List<Entry<? extends Class<?>, Object>> delayedBeanExports = new ArrayList<Entry<? extends Class<?>, Object>>();
 
+    @GuardedBy("this")
+    private final Set<String> currentExports = Sets.newHashSet();
+
     @Inject
     ConfigJmxExporter(Config config)
     {
@@ -59,6 +64,11 @@ class ConfigJmxExporter
     synchronized void setMBeanServer(MBeanServer server)
     {
         Preconditions.checkArgument(server != null, "null MBeanServer");
+
+        if (this.server != server) {
+            currentExports.clear();
+        }
+
         this.server = server;
 
         try {
@@ -86,10 +96,15 @@ class ConfigJmxExporter
             return;
         }
 
+        final String mungedName = munge(realClass.getName());
+        if (!currentExports.add(mungedName)) {
+            return; // Already exported
+        }
+
         try
         {
             server.registerMBean(new ConfigMagicDynamicMBean(realClass.getName(), configBean),
-                    new ObjectName(munge(realClass.getName())));
+                    new ObjectName(mungedName));
         } catch (Exception e)
         {
             LOG.error("Unable to export config bean " + configBean.getClass().getName(), e);
