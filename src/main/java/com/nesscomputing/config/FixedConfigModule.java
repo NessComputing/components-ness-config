@@ -37,8 +37,9 @@ public class FixedConfigModule extends AbstractModule {
     }
 
     public FixedConfigModule(Map<String, String> configOverrides) {
-        final ImmutableMap<String, String> map = ImmutableMap.<String, String>builder().putAll(configOverrides).build();
-        this.config = Config.getFixedConfig(new SystemConfiguration(), new MapConfiguration(map));
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        builder.putAll(configOverrides);
+        this.config = Config.getFixedConfig(new SystemConfiguration(), new MapConfiguration(builder.build()));
     }
 
     protected Config getConfig() {

@@ -29,7 +29,7 @@ import com.google.inject.Provider;
  *
  * @param <T> The type of the configuration bean.
  */
-public class ConfigProvider<T> implements Provider<T>
+public final class ConfigProvider<T> implements Provider<T>
 {
     private final String prefix;
     private final Class<T> clazz;
@@ -45,7 +45,7 @@ public class ConfigProvider<T> implements Provider<T>
      * @param clazz The class of the Configuration bean.
      * @return A provider.
      */
-    public static final <TYPE> Provider<TYPE> of(final Class<TYPE> clazz)
+    public static <TYPE> Provider<TYPE> of(final Class<TYPE> clazz)
     {
         return new ConfigProvider<TYPE>(null, clazz, null);
     }
@@ -59,7 +59,7 @@ public class ConfigProvider<T> implements Provider<T>
      * @return A provider.
      * @see Config#getBean(String, Class)
      */
-    public static final <TYPE> Provider<TYPE> of(@Nullable final String prefix, final Class<TYPE> clazz)
+    public static <TYPE> Provider<TYPE> of(@Nullable final String prefix, final Class<TYPE> clazz)
     {
         return new ConfigProvider<TYPE>(prefix, clazz, null);
     }
@@ -73,7 +73,7 @@ public class ConfigProvider<T> implements Provider<T>
      * @return A provider.
      * @see Config#getBean(String, Class)
      */
-    public static final <TYPE> Provider<TYPE> of(@Nullable final String prefix, final Class<TYPE> clazz,
+    public static <TYPE> Provider<TYPE> of(@Nullable final String prefix, final Class<TYPE> clazz,
             @Nullable final Map<String, String> overrides)
     {
         return new ConfigProvider<TYPE>(prefix, clazz, overrides);
@@ -86,7 +86,7 @@ public class ConfigProvider<T> implements Provider<T>
      * @return A provider.
      * @see Config#getBean(String, Class)
      */
-    public static final <TYPE> Provider<TYPE> of(final Class<TYPE> clazz,
+    public static <TYPE> Provider<TYPE> of(final Class<TYPE> clazz,
             @Nullable final Map<String, String> overrides)
     {
         return of(null, clazz, overrides);
@@ -103,18 +103,20 @@ public class ConfigProvider<T> implements Provider<T>
     public void setConfig(final Config config)
     {
         this.configBean = config.getBean(prefix, clazz, overrides);
-        setExporter(exporter); // Make sure we export regardless of what order Guice injects.
+        tryExport();
     }
 
     @Inject(optional=true)
     void setExporter(final ConfigJmxExporter exporter)
     {
-        if (this.exporter != exporter) {
-            this.exporter = exporter;
+        this.exporter = exporter;
+        tryExport();
+    }
 
-            if (exporter != null && configBean != null) {
-                exporter.export(clazz, configBean);
-            }
+    private void tryExport()
+    {
+        if (exporter != null && configBean != null) {
+            exporter.export(clazz, configBean);
         }
     }
 

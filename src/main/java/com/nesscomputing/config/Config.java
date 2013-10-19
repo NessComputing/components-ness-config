@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import org.apache.commons.configuration.AbstractConfiguration;
@@ -101,12 +102,13 @@ public final class Config
      */
     public static Config getFixedConfig(final String ... keyValuePairs)
     {
-        final Map<String, String> properties = Maps.newHashMap();
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+
         if (keyValuePairs != null) {
             for(final Iterator<String> it = Arrays.asList(keyValuePairs).iterator(); it.hasNext();) {
                 final String key = it.next();
                 if (it.hasNext()) {
-                    properties.put(key, it.next());
+                    builder.put(key, it.next());
                 }
                 else {
                     LOG.warn("Found an odd number of arguments for key/value pairs. Ignoring key %s", key);
@@ -114,7 +116,7 @@ public final class Config
                 }
             }
         }
-        return getFixedConfig(new MapConfiguration(properties));
+        return getFixedConfig(new MapConfiguration(builder.build()));
     }
 
     /**
@@ -284,7 +286,7 @@ public final class Config
                     sb.append(", ");
                 }
             }
-            sb.append("]");
+            sb.append(']');
             toStringValue = sb.toString();
         }
         return toStringValue;
