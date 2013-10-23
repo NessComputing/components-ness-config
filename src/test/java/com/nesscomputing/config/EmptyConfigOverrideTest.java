@@ -26,6 +26,6 @@ public class EmptyConfigOverrideTest
     public void testEmptyConfigOverride()
     {
         // Fails in ness-cache <= 2.1.0
-        Config.getOverriddenConfig(Config.getEmptyConfig(), new MapConfiguration(Collections.EMPTY_MAP));
+        Config.getOverriddenConfig(Config.getEmptyConfig(), new MapConfiguration(Collections.<String, String>emptyMap()));
     }
 }

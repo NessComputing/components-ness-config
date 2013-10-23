@@ -36,7 +36,6 @@ class ConfigDynamicMBean extends AbstractDynamicMBean
     private static Map<String, Object> toMap(Config config)
     {
         AbstractConfiguration configuration = config.getConfiguration();
-        @SuppressWarnings("unchecked")
         Iterator<String> keys = configuration.getKeys();
 
         Map<String, Object> result = Maps.newHashMap();

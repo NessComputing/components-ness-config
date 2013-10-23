@@ -79,15 +79,13 @@ public final class ImmutableConfiguration extends AbstractConfiguration implemen
         return delegate.getProperty(key);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public Iterator getKeys(String prefix) {
+    public Iterator<String> getKeys(String prefix) {
         return delegate.getKeys(prefix);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public Iterator getKeys() {
+    public Iterator<String> getKeys() {
         return delegate.getKeys();
     }
 
@@ -236,15 +234,13 @@ public final class ImmutableConfiguration extends AbstractConfiguration implemen
         return delegate.getStringArray(key);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public List getList(String key) {
+    public List<Object> getList(String key) {
         return delegate.getList(key);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public List getList(String key, List defaultValue) {
+    public List<Object> getList(String key, List<Object> defaultValue) {
         return delegate.getList(key, defaultValue);
     }
 

@@ -30,6 +30,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,7 @@ import org.slf4j.LoggerFactory;
  * Export Config objects and all ConfigMagic beans in JMX, if the MBeanServer
  * is bound in the Guice injector.
  */
+@Singleton
 class ConfigJmxExporter
 {
     private static final Logger LOG = LoggerFactory.getLogger(ConfigJmxExporter.class);
