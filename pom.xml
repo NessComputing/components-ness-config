@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.nesscomputing</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>31</version>
+    <version>32</version>
   </parent>
 
   <scm>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.nesscomputing.components</groupId>
       <artifactId>ness-tinyhttp</artifactId>
-      <version>1.2.0</version>
+      <version>1.2.1</version>
     </dependency>
 
     <dependency>

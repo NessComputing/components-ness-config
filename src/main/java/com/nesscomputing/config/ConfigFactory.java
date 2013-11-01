@@ -99,7 +99,7 @@ class ConfigFactory
 
         boolean loadedConfig = false;
         for (int i = 0; i < configNames.length; i++) {
-            final String configFileName = configNames[configNames.length - (i+1)];
+            final String configFileName = configNames[configNames.length - i - 1];
             final String configFilePath = StringUtils.join(configNames, "/", 0, configNames.length - i);
 
             try {
