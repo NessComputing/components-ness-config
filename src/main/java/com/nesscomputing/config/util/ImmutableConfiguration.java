@@ -240,8 +240,7 @@ public final class ImmutableConfiguration extends AbstractConfiguration implemen
     }
 
     @Override
-    public List<Object> getList(String key, List<Object> defaultValue) {
+    public List<Object> getList(String key, List<?> defaultValue) {
         return delegate.getList(key, defaultValue);
     }
-
 }
